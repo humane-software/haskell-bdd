@@ -1,6 +1,8 @@
 # What is haskell-bdd?
 It is an internal domain-specific language for testing programs using Behavior-Driven Development (BDD) process.
 
+Hackage page: <http://hackage.haskell.org/package/bdd>
+
 # What is BDD?
 Behavior-Driven Development is a process of writing tests and documenting software. It comprises of several useful techniques and ideas. You can read more at <http://dannorth.net/introducing-bdd/> and <http://en.wikipedia.org/wiki/Behavior-driven_development>.
 
