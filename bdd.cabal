@@ -1,27 +1,32 @@
 Name:                bdd
 Version:             0.1.0.0
-Synopsis:            A domain-specific language for testing programs using Behavior-Driven Development (BDD) process.
-Homepage:            github.com/humane-software/haskell-bdd
+Synopsis:            Behavior-Driven Development DSL
+Homepage:            http://github.com/humane-software/haskell-bdd
 License:             MIT
 License-File:        LICENSE
 Author:              Irek Jozwiak, Pavlo Kerestey
 Maintainer:          irek@humane.software
 Category:            Testing
+Stability:           experimental
 Build-Type:          Simple
 Cabal-Version:       >=1.10
+Description:         A domain-specific language for testing programs using Behavior-Driven Development (BDD) process.
+
+extra-source-files:
+  changelog.md
 
 Library
-  exposed-modules:     Test.Bdd
-  -- other-modules:       
+  exposed-modules:     Test.Bdd, Test.Bdd.Internal
   hs-source-dirs:      src
   default-language:    Haskell2010
-  build-depends:       base >=4.7 && <4.8
+  build-depends:       base ==4.*
                       ,HUnit
                       ,mtl
                       ,transformers
   
 Test-Suite system-tests
   type:       exitcode-stdio-1.0
+  other-modules:       BddTest
   main-is:    SystemTests.hs
   hs-source-dirs: tests/system, src
   build-depends: base
