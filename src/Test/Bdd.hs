@@ -26,8 +26,8 @@ type Then m a = Monad m => a -> m ()
 testThat :: GivenWithTeardown m
 testThat = []
 
-infixl 1 `given_`, `when_`, `then_`
-infixl 2 `andAfter_`
+infixl 1 `given_`, `when_`
+infixl 2 `andAfter_`, `then_`
 
 given_ :: (StorableAsGivenWithTeardown m g,Monad m) => GivenWithTeardown m -> g -> GivenWithTeardown m
 given_ gs g = gs ++ mkGiven g

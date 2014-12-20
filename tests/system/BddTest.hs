@@ -31,11 +31,11 @@ tests = test [
 
  ,"multiple thens are possible" ~: do
     testThat
-      `when_` writeFile "/tmp/BddTestFile" "xxx"
-      `then_` readFile "/tmp/BddTestFile" ^?= "xxx"
-      `then_` (elem "BddTestFile" <$> getDirectoryContents "/tmp/") ^?= True
+      `when_` writeFile "/tmp/BddTestFile2" "xxx"
+      `then_` readFile "/tmp/BddTestFile2" ^?= "xxx"
+      `then_` (elem "BddTestFile2" <$> getDirectoryContents "/tmp/") ^?= True
     -- we'll explain how to teardown later
-    void (runCommand "rm -f /tmp/BddTestFile")
+    void (runCommand "rm -f /tmp/BddTestFile2")
 
  ,"preconditions are possible as givens" ~:
     let noFile :: FilePath -> Given IO ()
@@ -48,25 +48,24 @@ tests = test [
       -- we'll explain how to teardown later
       void (runCommand "rm -f /tmp/BddTestFile")
 
- -- TODO: to be implemented
- -- ,"given can have a teardown, it takes given's return value" ~:
- --    let directory :: FilePath -> Given IO FilePath
- --        directory f = removeDir f >> createDirectory f >> return f
- --        removeDir :: FilePath -> IO ()
- --        removeDir f = doesDirectoryExist f >>= \exists->
- --                      when exists (removeDirectoryRecursive f)
- --    in testThat
- --      `given_` directory "/tmp/BddTestDir" `andAfter_` removeDir
- --      `when_` writeFile "/tmp/BddTestDir/test" "xxx"
- --      `then_` readFile "/tmp/BddTestDir/test" ^?= "xxx"
+ ,"given can have a teardown, it takes given's return value" ~:
+    let directory :: FilePath -> Given IO FilePath
+        directory f = removeDir f >> createDirectory f >> return f
+        removeDir :: FilePath -> IO ()
+        removeDir f = doesDirectoryExist f >>= \exists->
+                      when exists (removeDirectoryRecursive f)
+    in testThat
+      `given_` directory "/tmp/BddTestDir" `andAfter_` removeDir
+      `when_` writeFile "/tmp/BddTestDir/test" "xxx"
+      `then_` readFile "/tmp/BddTestDir/test" ^?= "xxx"
 
- -- ,"order of execution" ~:
- --    execWriter (
- --      (testThat::GivenWithTeardown (Writer [String]))
- --      `given_` (tell ["given"]::Writer [String] ()) `andAfter_` const (tell ["teardown"])
- --      `when_` tell ["when"]
- --      `then_` const (tell ["then"])
- --     ) @?= ["given","when","then","teardown"]
+ ,"order of execution" ~:
+    execWriter (
+      (testThat::GivenWithTeardown (Writer [String]))
+      `given_` (tell ["given"]::Writer [String] ()) `andAfter_` const (tell ["teardown"])
+      `when_` tell ["when"]
+      `then_` const (tell ["then"])
+     ) @?= ["given","when","then","teardown"]
 
  ,"can expect an error" ~:
     testThat
